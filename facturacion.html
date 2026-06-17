@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sazón — Facturación</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">SAZÓN<span>alta cocina peruana</span></a>
+    <ul class="nav-links">
+      <li id="nav-dashboard"><a href="index.html"><span class="nav-icon">⊞</span><span>Dashboard</span></a></li>
+      <li id="nav-platos"   ><a href="platos.html"><span class="nav-icon">🍽</span><span>Platos</span></a></li>
+      <li id="nav-pedidos"  ><a href="pedidos.html"><span class="nav-icon">📋</span><span>Pedidos</span></a></li>
+      <li id="nav-cocina"   ><a href="cocina.html"><span class="nav-icon">👨‍🍳</span><span>Cocina</span></a></li>
+      <li id="nav-facturacion"><a href="facturacion.html"><span class="nav-icon">💳</span><span>Facturación</span></a></li>
+      <li class="nav-user-info" style="color: var(--cream); font-size: 0.85rem; align-self: center; margin-left: 1rem;">
+        💳 <span id="nav-usuario-nombre">...</span>
+      </li>
+      <li>
+        <button class="btn btn-outline btn-sm" id="btn-logout">Salir</button>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="container">
+
+      <div class="page-header animate__animated animate__fadeInDown">
+        <div style="font-size:0.78rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:0.4rem">Módulo 04</div>
+        <h1 class="display-title" style="font-size:clamp(1.6rem,4vw,2.5rem)">Facturación & Cobro</h1>
+        <div class="gold-line"></div>
+        <p class="subtitle">Cierre de cuenta, IGV, descuentos y métodos de pago</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:3fr 2fr;gap:2rem;align-items:start">
+
+        <div class="animate-in">
+          <div class="glass-card-dark" style="margin-bottom:1.5rem">
+            <h2 class="section-title" style="margin-bottom:1rem">Buscar Mesa</h2>
+            <div style="display:flex;gap:0.75rem">
+              <input type="number" class="form-control" id="buscar-mesa" placeholder="Número de mesa (1–50)" min="1" max="50">
+              <button class="btn btn-gold" id="btn-buscar-mesa" style="white-space:nowrap">🔍 Buscar</button>
+            </div>
+            <p style="font-size:0.78rem;color:var(--text-muted);margin-top:0.6rem">Solo muestra pedidos con estado "Entregado"</p>
+          </div>
+
+          <div class="glass-card-dark" id="factura-wrap">
+            <div class="empty-state">
+              <div class="empty-state-icon">🔍</div>
+              <div class="empty-state-text">Busca una mesa para ver su cuenta</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="animate-in animate-delay-2">
+          <div class="billing-summary" style="margin-bottom:1.5rem">
+            <h3 style="font-family:'Playfair Display',serif;color:var(--gold-pale);margin-bottom:1rem;font-size:1.1rem">Resumen de Cuenta</h3>
+            <div class="total-row"><span>Subtotal</span><span id="res-subtotal">S/ 0.00</span></div>
+            <div class="total-row"><span>IGV (18%)</span><span id="res-igv">S/ 0.00</span></div>
+            <div class="total-row grand"><span>Total a Pagar</span><span id="res-total">S/ 0.00</span></div>
+          </div>
+
+          <div class="glass-card-dark" style="margin-bottom:1.25rem">
+            <h3 style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--cream-dim);margin-bottom:0.75rem;font-size:1rem">Aplicar Descuento</h3>
+            <div class="form-group">
+              <label for="descuento-input">Monto de Descuento (S/)</label>
+              <input type="number" class="form-control" id="descuento-input" placeholder="0.00" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+              <label for="justificacion-desc">Justificación <span style="color:var(--gold)">*</span> <span style="font-size:0.72rem;color:var(--text-muted)">(mín 10 chars)</span></label>
+              <textarea class="form-control" id="justificacion-desc" placeholder="Motivo del descuento…" style="min-height:60px"></textarea>
+            </div>
+            <button class="btn btn-outline btn-full" id="btn-aplicar-descuento">Aplicar Descuento</button>
+          </div>
+
+          <div class="glass-card-dark">
+            <h3 style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--cream-dim);margin-bottom:0.75rem;font-size:1rem">Método de Pago</h3>
+            <div class="form-group">
+              <label for="metodo-pago">Forma de Pago</label>
+              <select class="form-control" id="metodo-pago">
+                <option value="efectivo">💵 Efectivo</option>
+                <option value="tarjeta">💳 Tarjeta</option>
+                <option value="yape_plin">📱 Yape / Plin</option>
+              </select>
+            </div>
+
+            <div id="efectivo-wrap">
+              <div class="form-group">
+                <label for="monto-efectivo">Monto Recibido (S/)</label>
+                <input type="number" class="form-control" id="monto-efectivo" placeholder="0.00" min="0" step="0.01">
+              </div>
+              <div id="vuelto-display" style="font-family:'Playfair Display',serif;font-size:1.1rem;text-align:center;padding:0.5rem;margin-bottom:0.75rem"></div>
+            </div>
+
+            <button class="btn btn-gold btn-full btn-lg" id="btn-procesar-pago">
+              ✦ Procesar Pago
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="text-align:center;padding:2rem 0;border-top:1px solid var(--border)">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--text-muted);font-size:0.95rem">
+          Sazón — Sistema de Gestión de Restaurante · Alta Cocina Peruana
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="toast-container"></div>
+
+  <script type="module" src="facturacion.js"></script>
+</body>
+</html>

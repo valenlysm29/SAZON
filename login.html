@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sazón — Acceso al Sistema</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  
+  <style>
+    .auth-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: radial-gradient(circle at center, #111111 0%, #0a0a0a 100%);
+    }
+    .auth-box {
+      width: 100%;
+      max-width: 440px;
+      padding: 2.5rem;
+    }
+    .auth-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+    }
+    .auth-tab {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .auth-tab:hover { color: var(--gold-pale); }
+    .auth-tab.active {
+      color: var(--gold-light);
+      font-weight: 600;
+      border-bottom: 2px solid var(--gold);
+    }
+    .auth-section { display: none; }
+    .auth-section.visible { display: block; }
+    .auth-box h1 { font-family: 'Playfair Display', serif !important; font-weight: 900; }
+    .auth-box .form-group { margin-bottom: 1.25rem; text-align: left; }
+    .auth-box label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      color: var(--cream-dim);
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+    }
+    .auth-box .form-control {
+      font-family: 'Jost', sans-serif !important;
+      padding: 0.75rem 1rem !important;
+      background: rgba(255, 255, 255, 0.02) !important;
+      border: 1px solid var(--border) !important;
+    }
+    .auth-box .form-control:focus {
+      border-color: var(--gold-light) !important;
+      background: rgba(184, 134, 11, 0.05) !important;
+      box-shadow: 0 0 15px rgba(184, 134, 11, 0.2) !important;
+    }
+    .auth-box .form-control.invalid {
+      border-color: #d32f2f !important;
+    }
+    .field-err {
+      font-size: 0.75rem;
+      color: #d32f2f;
+      display: none;
+      margin-top: 0.3rem;
+    }
+    .field-err.visible { display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="auth-wrapper">
+    <div class="glass-card-dark auth-box animate__animated animate__fadeInUp">
+      
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <h1 style="color: var(--cream); font-size: 2.5rem; letter-spacing: 2px; margin: 0;">
+          SAZÓN
+        </h1>
+        <span style="font-size: 0.75rem; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; display: block; margin-top: 0.2rem;">
+          alta cocina peruana
+        </span>
+        <div class="gold-line" style="margin: 1.25rem auto; width: 60px;"></div>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="showTab('login')">Ingresar</button>
+        <button class="auth-tab" id="tab-registro" onclick="showTab('registro')">Nuevo Personal</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div id="section-login" class="auth-section visible">
+        <div class="form-group">
+          <label for="login-email">Correo Electrónico</label>
+          <input type="email" class="form-control" id="login-email" placeholder="chef@sazon.com" required>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Contraseña</label>
+          <input type="password" class="form-control" id="login-password" placeholder="••••••••" required>
+        </div>
+        <button class="btn btn-gold btn-full btn-lg" id="btn-login" style="margin-top: 1.5rem;">
+          ✦ Ingresar al Sistema
+        </button>
+      </div>
+
+      <!-- REGISTRO -->
+      <div id="section-registro" class="auth-section">
+        <div class="form-group">
+          <label for="reg-nombre">Nombre Completo</label>
+          <input type="text" class="form-control" id="reg-nombre" placeholder="Juan Pérez">
+          <span class="field-err" id="reg-nombre-err"></span>
+        </div>
+        <div class="form-group">
+          <label for="reg-email">Correo Electrónico</label>
+          <input type="email" class="form-control" id="reg-email" placeholder="mozo1@sazon.com">
+          <span class="field-err" id="reg-email-err"></span>
+        </div>
+        <div class="form-group">
+          <label for="reg-password">Contraseña <span style="font-size:0.7rem; color:var(--text-muted)">(mín. 6 chars)</span></label>
+          <input type="password" class="form-control" id="reg-password" placeholder="••••••••">
+          <span class="field-err" id="reg-password-err"></span>
+        </div>
+        <div class="form-group">
+          <label for="reg-confirm">Confirmar Contraseña</label>
+          <input type="password" class="form-control" id="reg-confirm" placeholder="••••••••">
+          <span class="field-err" id="reg-confirm-err"></span>
+        </div>
+        <div class="form-group">
+          <label for="reg-rol">Rol en el Restaurante</label>
+          <select class="form-control" id="reg-rol">
+            <option value="mozo">📋 Mozo / Salón</option>
+            <option value="cocina">👨‍🍳 Chef / Cocina</option>
+            <option value="caja">💳 Cajero / Facturación</option>
+            <option value="administrador">👑 Administrador</option>
+          </select>
+        </div>
+        <button class="btn btn-outline btn-full btn-lg" id="btn-registro" style="margin-top: 1.5rem;">
+          Registrar Personal
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="toast-container"></div>
+
+  <script>
+    window.showTab = function(tab) {
+      document.querySelectorAll('.auth-section').forEach(s => s.classList.remove('visible'));
+      document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+      if (tab === 'login') {
+        document.getElementById('section-login').classList.add('visible');
+        document.getElementById('tab-login').classList.add('active');
+      } else {
+        document.getElementById('section-registro').classList.add('visible');
+        document.getElementById('tab-registro').classList.add('active');
+      }
+    }
+  </script>
+
+  <script type="module" src="login.js"></script>
+</body>
+</html>

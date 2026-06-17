@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sazón — Tablero de Cocina</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">SAZÓN<span>alta cocina peruana</span></a>
+    <ul class="nav-links">
+      <li id="nav-dashboard"><a href="index.html"><span class="nav-icon">⊞</span><span>Dashboard</span></a></li>
+      <li id="nav-platos"   ><a href="platos.html"><span class="nav-icon">🍽</span><span>Platos</span></a></li>
+      <li id="nav-pedidos"  ><a href="pedidos.html"><span class="nav-icon">📋</span><span>Pedidos</span></a></li>
+      <li id="nav-cocina"   ><a href="cocina.html"><span class="nav-icon">👨‍🍳</span><span>Cocina</span></a></li>
+      <li id="nav-facturacion"><a href="facturacion.html"><span class="nav-icon">💳</span><span>Facturación</span></a></li>
+      <li class="nav-user-info" style="color: var(--cream); font-size: 0.85rem; align-self: center; margin-left: 1rem;">
+        👨‍🍳 <span id="nav-usuario-nombre">...</span>
+      </li>
+      <li>
+        <button class="btn btn-outline btn-sm" id="btn-logout">Salir</button>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="container">
+
+      <div class="page-header animate__animated animate__fadeInDown">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+          <div>
+            <div style="font-size:0.78rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:0.4rem">Módulo 03</div>
+            <h1 class="display-title" style="font-size:clamp(1.6rem,4vw,2.5rem)">Tablero de Cocina</h1>
+            <div class="gold-line"></div>
+            <p class="subtitle">Control de producción en tiempo real · Conexión directa a Comandas</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+            <span id="cocina-count" style="color:var(--text-muted);font-size:0.85rem"></span>
+            <button class="btn btn-outline" id="btn-refresh-cocina">↺ Actualizar</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem" class="animate-in">
+        <span style="font-size:0.78rem;color:var(--text-muted);align-self:center;margin-right:0.5rem">Estados:</span>
+        <span class="estado-pill estado-pendiente">Pendiente</span>
+        <span class="estado-pill estado-en-preparacion">En Preparación</span>
+        <span class="estado-pill estado-listo">Listo para servir</span>
+        <span class="estado-pill estado-entregado">Entregado</span>
+        <span style="margin-left:1rem;font-size:0.78rem;color:var(--gold);align-self:center">⚡ Borde dorado = Urgente</span>
+      </div>
+
+      <div class="cocina-grid" id="cocina-grid">
+        <div class="empty-state" style="grid-column:1/-1">
+          <div class="empty-state-icon">👨‍🍳</div>
+          <div class="empty-state-text">Cargando pedidos en tiempo real…</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="toast-container"></div>
+
+  <script type="module" src="cocina.js"></script> 
+</body>
+</html>

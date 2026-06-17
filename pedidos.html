@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sazón — Toma de Pedidos</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">SAZÓN<span>alta cocina peruana</span></a>
+    <ul class="nav-links">
+      <li id="nav-dashboard"   ><a href="index.html"><span class="nav-icon">⊞</span><span>Dashboard</span></a></li>
+      <li id="nav-platos"      ><a href="platos.html"><span class="nav-icon">🍽</span><span>Platos</span></a></li>
+      <li id="nav-pedidos"     ><a href="pedidos.html"><span class="nav-icon">📋</span><span>Pedidos</span></a></li>
+      <li id="nav-cocina"      ><a href="cocina.html"><span class="nav-icon">👨‍🍳</span><span>Cocina</span></a></li>
+      <li id="nav-facturacion" ><a href="facturacion.html"><span class="nav-icon">💳</span><span>Facturación</span></a></li>
+    </ul>
+    <div class="nav-user">
+      <span class="nav-user-name" id="nav-usuario-nombre"></span>
+      <button class="btn btn-outline btn-sm" id="btn-logout">Salir</button>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="container">
+
+      <div class="page-header animate__animated animate__fadeInDown">
+        <div style="font-size:0.78rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:0.4rem">Módulo 02</div>
+        <h1 class="display-title" style="font-size:clamp(1.6rem,4vw,2.5rem)">Toma de Pedidos</h1>
+        <div class="gold-line"></div>
+        <p class="subtitle">Registra pedidos por mesa, mozo y prioridad</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start">
+
+        <!-- FORMULARIO -->
+        <div class="animate-in">
+          <div class="glass-card-dark" style="margin-bottom:1.5rem">
+            <h2 class="section-title">Nuevo Pedido</h2>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="pedido-mesa">Número de Mesa <span style="color:var(--gold)">*</span></label>
+                <input type="number" class="form-control" id="pedido-mesa" placeholder="1 – 50" min="1" max="50">
+                <div class="input-error" id="pedido-mesa-err"></div>
+              </div>
+              <div class="form-group">
+                <label for="pedido-mozo">Nombre del Mozo <span style="color:var(--gold)">*</span></label>
+                <input type="text" class="form-control" id="pedido-mozo" placeholder="Mín 3 caracteres">
+                <div class="input-error" id="pedido-mozo-err"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="pedido-prioridad">Prioridad</label>
+              <select class="form-control" id="pedido-prioridad">
+                <option value="normal">Normal</option>
+                <option value="alta">Alta</option>
+                <option value="urgente">Urgente ⚡</option>
+              </select>
+            </div>
+
+            <div class="form-group" id="justificacion-wrap" style="display:none">
+              <label for="pedido-justificacion">Justificación de Urgencia <span style="color:var(--gold)">*</span></label>
+              <textarea class="form-control" id="pedido-justificacion" placeholder="Mínimo 10 caracteres — explica por qué es urgente" style="min-height:70px"></textarea>
+              <div class="input-error" id="pedido-justificacion-err"></div>
+            </div>
+          </div>
+
+          <!-- SELECCIÓN DE PLATOS -->
+          <div class="glass-card-dark">
+            <h3 style="font-family:'Playfair Display',serif;color:var(--gold-pale);margin-bottom:1rem;font-size:1.1rem">Selección de Platos</h3>
+
+            <div style="display:flex;gap:0.5rem;margin-bottom:1rem">
+              <select class="form-control" id="plato-select">
+                <option value="">— Seleccionar plato activo —</option>
+              </select>
+              <button class="btn btn-gold" id="btn-add-plato" style="white-space:nowrap">+ Agregar</button>
+            </div>
+
+            <div id="items-wrap"></div>
+
+            <div class="divider"></div>
+
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:0.85rem;color:var(--text-muted)">Total del pedido</span>
+              <span id="pedido-total" style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--gold-pale)">S/ 0.00</span>
+            </div>
+
+            <button class="btn btn-gold btn-full btn-lg" id="btn-enviar-pedido" style="margin-top:1.25rem">
+              ✦ Enviar a Cocina
+            </button>
+          </div>
+        </div>
+
+        <!-- LISTA DE PEDIDOS -->
+        <div class="animate-in animate-delay-2">
+          <h2 class="section-title">Pedidos Registrados</h2>
+          <div id="pedidos-list"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="toast-container"></div>
+  <script type="module" src="pedidos.js"></script>
+</body>
+</html>

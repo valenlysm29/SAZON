@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sazón — Gestión de Platos</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">SAZÓN<span>alta cocina peruana</span></a>
+    <ul class="nav-links">
+      <li id="nav-dashboard"   ><a href="index.html"><span class="nav-icon">⊞</span><span>Dashboard</span></a></li>
+      <li id="nav-platos"      ><a href="platos.html"><span class="nav-icon">🍽</span><span>Platos</span></a></li>
+      <li id="nav-pedidos"     ><a href="pedidos.html"><span class="nav-icon">📋</span><span>Pedidos</span></a></li>
+      <li id="nav-cocina"      ><a href="cocina.html"><span class="nav-icon">👨‍🍳</span><span>Cocina</span></a></li>
+      <li id="nav-facturacion" ><a href="facturacion.html"><span class="nav-icon">💳</span><span>Facturación</span></a></li>
+    </ul>
+    <div class="nav-user">
+      <span class="nav-user-name" id="nav-usuario-nombre"></span>
+      <button class="btn btn-outline btn-sm" id="btn-logout">Salir</button>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="container">
+
+      <div class="page-header animate__animated animate__fadeInDown">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+          <div>
+            <div style="font-size:0.78rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:0.4rem">Módulo 01</div>
+            <h1 class="display-title" style="font-size:clamp(1.6rem,4vw,2.5rem)">Gestión de Platos</h1>
+            <div class="gold-line"></div>
+            <p class="subtitle">Registro y administración del menú · CRUD completo</p>
+          </div>
+          <button class="btn btn-gold btn-lg" id="btn-nuevo-plato">+ Nuevo Plato</button>
+        </div>
+      </div>
+
+      <!-- FILTROS -->
+      <div class="filter-bar animate-in">
+        <input type="text" class="form-control" id="filter-nombre" placeholder="🔍  Buscar por nombre o código…">
+        <select class="form-control" id="filter-cat" style="max-width:180px">
+          <option value="">Todas las categorías</option>
+          <option value="Entrada">Entrada</option>
+          <option value="Fondo">Fondo</option>
+          <option value="Postre">Postre</option>
+          <option value="Bebida">Bebida</option>
+          <option value="Especial">Especial</option>
+        </select>
+        <select class="form-control" id="filter-estado" style="max-width:150px">
+          <option value="">Todos los estados</option>
+          <option value="activo">Activo</option>
+          <option value="inactivo">Inactivo</option>
+        </select>
+        <span id="platos-count" style="color:var(--text-muted);font-size:0.82rem;white-space:nowrap;align-self:center"></span>
+      </div>
+
+      <!-- TABLA -->
+      <div class="glass-card-dark animate-in" style="padding:0;overflow:hidden">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Nombre / Descripción</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>T. Prep</th>
+                <th>Alérgenos</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="platos-tbody">
+              <tr><td colspan="8" style="text-align:center;padding:3rem;color:var(--text-muted)">Cargando…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL NUEVO/EDITAR PLATO -->
+  <div class="modal-overlay" id="modal-plato">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-plato-title">Nuevo Plato</h2>
+        <button class="modal-close" data-close-modal="modal-plato">✕</button>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="plato-codigo">Código <span style="color:var(--gold)">*</span></label>
+          <input type="text" class="form-control" id="plato-codigo" placeholder="PL001" maxlength="20">
+          <div class="input-error" id="plato-codigo-err"></div>
+        </div>
+        <div class="form-group">
+          <label for="plato-categoria">Categoría <span style="color:var(--gold)">*</span></label>
+          <select class="form-control" id="plato-categoria">
+            <option value="">— Seleccionar —</option>
+            <option value="Entrada">Entrada</option>
+            <option value="Fondo">Fondo</option>
+            <option value="Postre">Postre</option>
+            <option value="Bebida">Bebida</option>
+            <option value="Especial">Especial</option>
+          </select>
+          <div class="input-error" id="plato-categoria-err"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="plato-nombre">Nombre del Plato <span style="color:var(--gold)">*</span></label>
+        <input type="text" class="form-control" id="plato-nombre" placeholder="Ej: Ceviche Clásico" maxlength="60">
+        <div class="input-error" id="plato-nombre-err"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="plato-descripcion">Descripción <span style="color:var(--gold)">*</span></label>
+        <textarea class="form-control" id="plato-descripcion" placeholder="Descripción del plato (10–250 caracteres)" maxlength="250"></textarea>
+        <div class="input-error" id="plato-descripcion-err"></div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="plato-precio">Precio (S/) <span style="color:var(--gold)">*</span></label>
+          <input type="number" class="form-control" id="plato-precio" placeholder="0.00" min="0.01" step="0.01">
+          <div class="input-error" id="plato-precio-err"></div>
+        </div>
+        <div class="form-group">
+          <label for="plato-tiempo_prep">Tiempo Prep. (min) <span style="color:var(--gold)">*</span></label>
+          <input type="number" class="form-control" id="plato-tiempo_prep" placeholder="15" min="1" max="120">
+          <div class="input-error" id="plato-tiempo_prep-err"></div>
+        </div>
+        <div class="form-group">
+          <label for="plato-estado">Estado <span style="color:var(--gold)">*</span></label>
+          <select class="form-control" id="plato-estado">
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+          </select>
+          <div class="input-error" id="plato-estado-err"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="plato-ingredientes">Ingredientes principales</label>
+        <input type="text" class="form-control" id="plato-ingredientes" placeholder="Ej: Pescado fresco, limón, ají amarillo…">
+      </div>
+
+      <div class="form-group">
+        <label>Alérgenos</label>
+        <div id="alergenos-wrap" class="checkbox-group"></div>
+      </div>
+
+      <div style="display:flex;gap:0.75rem;justify-content:flex-end;margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+        <button class="btn btn-outline" data-close-modal="modal-plato">Cancelar</button>
+        <button class="btn btn-gold" id="btn-save-plato">Guardar Plato</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container"></div>
+  <script type="module" src="platos.js"></script>
+</body>
+</html>
