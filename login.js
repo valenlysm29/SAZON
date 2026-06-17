@@ -13,7 +13,24 @@ import {
 
 let currentTab = 'login';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+
+  // ── MANEJAR CONFIRMACIÓN DE EMAIL DESDE LINK ──────────────────────
+  const hash = window.location.hash;
+  if (hash && hash.includes('access_token')) {
+    const params = new URLSearchParams(hash.substring(1));
+    const accessToken = params.get('access_token');
+    const refreshToken = params.get('refresh_token');
+    if (accessToken) {
+      await supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken
+      });
+      toast('✓ Correo confirmado. Ingresando...', 'success');
+      await procesarRedireccionUsuario();
+      return;
+    }
+  }
 
   document.getElementById('tab-login')?.addEventListener('click', () => { currentTab = 'login'; });
   document.getElementById('tab-registro')?.addEventListener('click', () => { currentTab = 'registro'; });
@@ -67,11 +84,11 @@ document.addEventListener('DOMContentLoaded', () => {
       ok = false;
     };
 
-    if (!nombre || nombre.length < 3)    setErr('reg-nombre',   'Ingresa tu nombre completo (mín. 3 caracteres).');
-    if (!email)                           setErr('reg-email',    'Ingresa un correo electrónico válido.');
-    if (!password || password.length < 6) setErr('reg-password', 'La contraseña debe tener al menos 6 caracteres.');
-    if (!confirm)                         setErr('reg-confirm',  'Confirma tu contraseña.');
-    else if (password !== confirm)        setErr('reg-confirm',  'Las contraseñas no coinciden.');
+    if (!nombre || nombre.length < 3)     setErr('reg-nombre',   'Ingresa tu nombre completo (mín. 3 caracteres).');
+    if (!email)                            setErr('reg-email',    'Ingresa un correo electrónico válido.');
+    if (!password || password.length < 6)  setErr('reg-password', 'La contraseña debe tener al menos 6 caracteres.');
+    if (!confirm)                          setErr('reg-confirm',  'Confirma tu contraseña.');
+    else if (password !== confirm)         setErr('reg-confirm',  'Las contraseñas no coinciden.');
 
     if (!ok) return;
 
@@ -81,9 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       await registrar(email, password, nombre, rol);
-      toast('✓ Personal registrado. Iniciando sesión...', 'success');
-      await login(email, password);
-      await procesarRedireccionUsuario();
+      toast('✓ Registro exitoso. Revisa tu correo para confirmar tu cuenta.', 'success');
+      btn.textContent = 'Registrar Personal';
+      btn.disabled = false;
     } catch (e) {
       toast(e.message || 'Error al registrar usuario', 'error');
       btn.textContent = 'Registrar Personal';
