@@ -20,7 +20,10 @@ export async function registrar(email, password, nombre, rol) {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { nombre, rol } },
+    options: {
+      data: { nombre, rol },
+      emailRedirectTo: 'https://valenlysm29.github.io/SAZON/login.html'
+    },
   });
   if (error) throw error;
   return data;
